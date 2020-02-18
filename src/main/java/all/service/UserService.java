@@ -13,5 +13,7 @@ public interface UserService {
 
     boolean isUser(Long id);
 
-    boolean deleteUser(Long id);
+    void deleteUser(Long id);
+
+    User getUser(String name, Long password);
 }

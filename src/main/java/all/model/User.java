@@ -1,12 +1,21 @@
 package all.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "user")
 public class User {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "mail")
     private String mail;
 
     public User() {
-
     }
 
     public User(String name, String mail) {

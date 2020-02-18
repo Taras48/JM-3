@@ -1,6 +1,8 @@
 package all.service;
 
-import all.dao.UserDaoImpl;
+import all.dao.UserDao;
+import all.dao.UserDaoHibernateImpl;
+import all.dao.UserDaoJDBCImpl;
 import all.dbHelper.DBHelper;
 import all.model.User;
 import java.sql.SQLException;
@@ -20,8 +22,8 @@ public class UserServiceImpl implements UserService {
         return userService;
     }
 
-    private UserDaoImpl getUserDao() {
-        return new UserDaoImpl(DBHelper.getConnection());
+    private UserDao getUserDao() {
+        return new UserDaoHibernateImpl(DBHelper.getSessionFactory());
     }
 
     @Override
@@ -50,7 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
-        return getUserDao().deleteUser(id);
+    public void deleteUser(Long id) {
+       getUserDao().deleteUser(id);
+    }
+
+    @Override
+    public User getUser(String name, Long password) {
+        return getUserDao().getUser(name, password);
     }
 }

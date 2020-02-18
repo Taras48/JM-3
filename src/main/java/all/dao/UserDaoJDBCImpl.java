@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDaoImpl implements UserDao {
+public class UserDaoJDBCImpl implements UserDao {
 
     private Connection connection;
 
-    public UserDaoImpl(Connection connection) {
+    public UserDaoJDBCImpl(Connection connection) {
         this.connection = connection;
         try {
             this.connection.setAutoCommit(false);
@@ -21,10 +21,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean addUser(User user) {
-        if (user == null) {
-            return false;
-        }
+    public void addUser(User user) {
+
         createTable();
         String sql = "insert user(name, mail) values (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -32,7 +30,6 @@ public class UserDaoImpl implements UserDao {
             ps.setString(2, user.getMail());
             ps.executeUpdate();
             connection.commit();
-            return true;
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -41,7 +38,7 @@ public class UserDaoImpl implements UserDao {
             }
             System.out.println("user not add");
         }
-        return false;
+
     }
 
     @Override
@@ -95,13 +92,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public void deleteUser(Long id) {
         String sql = "delete from user where id = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)){
             st.setLong(1, id);
             st.executeUpdate();
             connection.commit();
-            return true;
+
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -110,7 +107,30 @@ public class UserDaoImpl implements UserDao {
             }
             System.out.println("erorr delet user");
         }
-        return false;
+
+    }
+
+    @Override
+    public User getUser(String name, Long password) {
+        String sql = "select * from user where name = ? and password = ?";
+        User user = null;
+        try (PreparedStatement st = connection.prepareStatement(sql)){
+            st.setString(1, name);
+            st.setLong(2, password);
+            ResultSet resultSet = st.executeQuery();
+            resultSet.next();
+            user = new User(resultSet.getLong("id"), resultSet.getString("name"),
+                    resultSet.getString("mail"));
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        return user;
     }
 
     public void createTable() {
