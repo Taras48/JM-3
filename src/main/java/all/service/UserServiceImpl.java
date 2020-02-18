@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUser(Long id) {
-        return getUserDao().isUser(id);
+        return getUserDao().isUserExist(id);
     }
 
     @Override

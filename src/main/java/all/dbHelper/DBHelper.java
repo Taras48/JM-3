@@ -1,5 +1,7 @@
 package all.dbHelper;
 
+import all.utils.PropertyReader;
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -9,9 +11,9 @@ public class DBHelper {
 
     public static Connection getConnection() {
         try {
-            Driver driver = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
+            Driver driver = (Driver) Class.forName(PropertyReader.getProperty("driver")).newInstance();
             DriverManager.registerDriver(driver);
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/db_example?user=root&password=root");
+            return DriverManager.getConnection(PropertyReader.getProperty("base"));
         } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new IllegalStateException();

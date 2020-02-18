@@ -15,6 +15,7 @@ import java.util.List;
 
 @WebServlet("/update")
 public class UserUpdateServlet extends HttpServlet {
+    private UserServiceImpl userService = UserServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,15 +24,14 @@ public class UserUpdateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserServiceImpl userService = UserServiceImpl.getInstance();
+
         String name = req.getParameter("newName");
         String mail = req.getParameter("newMail");
         Long id = Long.parseLong(req.getParameter("testId"));
         if (userService.isUser(id)) {
             userService.updateUser(new User(id, name, mail));
         }
-        List<User> list = userService.getAllUsers();
-        req.setAttribute("list", list);
-        req.getRequestDispatcher("userIndex.jsp").forward(req, resp);
+
+        resp.sendRedirect("/user");
     }
 }

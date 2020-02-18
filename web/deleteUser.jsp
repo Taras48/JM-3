@@ -11,7 +11,7 @@
     <title>Delete User</title>
 </head>
 <body>
-<p><a href="/update">Update User</a> |
+<p><a href="/add">Add User</a> |
     <a href="/update">Update User</a>
 <h3>Delete User</h3>
 

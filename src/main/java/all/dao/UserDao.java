@@ -6,9 +6,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDao {
-    public List<User> getAllUsers() throws SQLException;
-    public boolean addUser(User user);
-    public boolean isUser(Long id);
-    public void updateUser(User user);
-    public boolean deleteUser(Long id);
+    List<User> getAllUsers() throws SQLException;
+
+    boolean addUser(User user);
+
+    boolean isUserExist(Long id);
+
+    void updateUser(User user);
+
+    boolean deleteUser(Long id);
 }

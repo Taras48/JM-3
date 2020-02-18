@@ -5,9 +5,13 @@ import all.model.User;
 import java.util.List;
 
 public interface UserService {
-    public void addUser(User user);
-    public List<User> getAllUsers();
-    public void updateUser(User user);
-    public boolean isUser(Long id);
-    public boolean deleteUser(Long id);
+    void addUser(User user);
+
+    List<User> getAllUsers();
+
+    void updateUser(User user);
+
+    boolean isUser(Long id);
+
+    boolean deleteUser(Long id);
 }

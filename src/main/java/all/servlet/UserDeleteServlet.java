@@ -14,6 +14,7 @@ import java.util.List;
 
 @WebServlet("/del")
 public class UserDeleteServlet extends HttpServlet {
+    private UserServiceImpl userService = UserServiceImpl.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,13 +23,12 @@ public class UserDeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserServiceImpl userService = UserServiceImpl.getInstance();
+
         Long id = Long.parseLong(req.getParameter("id"));
         if (id > 0) {
             userService.deleteUser(id);
         }
-        List<User> list = userService.getAllUsers();
-        req.setAttribute("list", list);
-        req.getRequestDispatcher("userIndex.jsp").forward(req, resp);
+        resp.sendRedirect("/user");
+
     }
 }
